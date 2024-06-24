@@ -21,7 +21,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.apache.shardingsphere.core.exception.ShardingException;
+import org.apache.shardingsphere.underlying.common.exception.ShardingSphereException;
 import org.apache.shardingsphere.shardingproxy.backend.communication.jdbc.recognizer.JDBCDriverURLRecognizerEngine;
 import org.apache.shardingsphere.shardingproxy.config.yaml.YamlDataSourceParameter;
 
@@ -73,6 +73,7 @@ public final class JDBCRawBackendDataSourceFactory implements JDBCBackendDataSou
         config.addDataSourceProperty("elideSetAutoCommits", Boolean.TRUE.toString());
         config.addDataSourceProperty("maintainTimeStats", Boolean.FALSE.toString());
         config.addDataSourceProperty("netTimeoutForStreamingResults", 0);
+        config.addDataSourceProperty("tinyInt1isBit", Boolean.FALSE.toString());
         return new HikariDataSource(config);
     }
     
@@ -80,7 +81,7 @@ public final class JDBCRawBackendDataSourceFactory implements JDBCBackendDataSou
         try {
             Class.forName(driverClassName);
         } catch (final ClassNotFoundException ex) {
-            throw new ShardingException("Cannot load JDBC driver class `%s`, make sure it in Sharding-Proxy's classpath.", driverClassName);
+            throw new ShardingSphereException("Cannot load JDBC driver class `%s`, make sure it in Sharding-Proxy's classpath.", driverClassName);
         }
     }
 }

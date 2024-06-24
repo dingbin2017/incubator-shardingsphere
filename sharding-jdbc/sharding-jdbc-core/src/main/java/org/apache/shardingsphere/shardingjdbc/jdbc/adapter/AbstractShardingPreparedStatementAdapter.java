@@ -20,7 +20,7 @@ package org.apache.shardingsphere.shardingjdbc.jdbc.adapter;
 import com.google.common.io.CharStreams;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.apache.shardingsphere.core.exception.ShardingException;
+import org.apache.shardingsphere.underlying.common.exception.ShardingSphereException;
 import org.apache.shardingsphere.shardingjdbc.jdbc.adapter.invocation.SetParameterMethodInvocation;
 import org.apache.shardingsphere.shardingjdbc.jdbc.unsupported.AbstractUnsupportedOperationPreparedStatement;
 
@@ -215,7 +215,7 @@ public abstract class AbstractShardingPreparedStatementAdapter extends AbstractU
         try {
             setParameter(parameterIndex, CharStreams.toString(x));
         } catch (final IOException ex) {
-            throw new ShardingException(ex);
+            throw new ShardingSphereException(ex);
         }
     }
     
@@ -224,7 +224,7 @@ public abstract class AbstractShardingPreparedStatementAdapter extends AbstractU
         try {
             setParameter(parameterIndex, CharStreams.toString(x));
         } catch (final IOException ex) {
-            throw new ShardingException(ex);
+            throw new ShardingSphereException(ex);
         }
     }
     
@@ -233,7 +233,7 @@ public abstract class AbstractShardingPreparedStatementAdapter extends AbstractU
         try {
             setParameter(parameterIndex, CharStreams.toString(x));
         } catch (final IOException ex) {
-            throw new ShardingException(ex);
+            throw new ShardingSphereException(ex);
         }
     }
     
@@ -284,12 +284,12 @@ public abstract class AbstractShardingPreparedStatementAdapter extends AbstractU
     private void addParameters(final List<Object> parameters) {
         int i = 0;
         for (Object each : parameters) {
-            setParameter(new Class[]{int.class, Object.class}, i++ + 1, each);
+            setParameters(new Class[]{int.class, Object.class}, i++ + 1, each);
         }
     }
     
     @SneakyThrows
-    private void setParameter(final Class[] argumentTypes, final Object... arguments) {
+    private void setParameters(final Class[] argumentTypes, final Object... arguments) {
         setParameterMethodInvocations.add(new SetParameterMethodInvocation(PreparedStatement.class.getMethod("setObject", argumentTypes), arguments, arguments[1]));
     }
     

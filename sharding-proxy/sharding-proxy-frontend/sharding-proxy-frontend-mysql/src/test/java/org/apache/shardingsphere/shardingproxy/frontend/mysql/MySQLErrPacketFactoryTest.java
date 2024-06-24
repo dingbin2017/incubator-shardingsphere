@@ -42,12 +42,21 @@ public final class MySQLErrPacketFactoryTest {
     }
     
     @Test
+    public void assertNewInstanceWithSQLExceptionOfNullSqlState() {
+        MySQLErrPacket actual = MySQLErrPacketFactory.newInstance(1, new SQLException(new RuntimeException("No reason")));
+        assertThat(actual.getSequenceId(), is(1));
+        assertThat(actual.getErrorCode(), is(1815));
+        assertThat(actual.getSqlState(), is("HY000"));
+        assertThat(actual.getErrorMessage(), is("Internal error: No reason"));
+    }
+    
+    @Test
     public void assertNewInstanceWithInvalidShardingCTLFormatException() {
         MySQLErrPacket actual = MySQLErrPacketFactory.newInstance(1, new InvalidShardingCTLFormatException("test"));
         assertThat(actual.getSequenceId(), is(1));
         assertThat(actual.getErrorCode(), is(11000));
         assertThat(actual.getSqlState(), is("S11000"));
-        assertThat(actual.getErrorMessage(), is("Invalid format for sharding ctl [test], should be [sctl:set key=value]."));
+        assertThat(actual.getErrorMessage(), is("Invalid format for sharding ctl [test]."));
     }
     
     @Test

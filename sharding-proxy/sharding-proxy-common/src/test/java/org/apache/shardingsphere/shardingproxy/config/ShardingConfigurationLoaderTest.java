@@ -17,8 +17,8 @@
 
 package org.apache.shardingsphere.shardingproxy.config;
 
-import org.apache.shardingsphere.core.yaml.config.encrypt.YamlEncryptRuleConfiguration;
-import org.apache.shardingsphere.core.yaml.config.encrypt.YamlEncryptorRuleConfiguration;
+import org.apache.shardingsphere.encrypt.yaml.config.YamlEncryptRuleConfiguration;
+import org.apache.shardingsphere.encrypt.yaml.config.YamlEncryptorRuleConfiguration;
 import org.apache.shardingsphere.core.yaml.config.masterslave.YamlMasterSlaveRuleConfiguration;
 import org.apache.shardingsphere.core.yaml.config.sharding.YamlShardingRuleConfiguration;
 import org.apache.shardingsphere.orchestration.yaml.config.YamlOrchestrationConfiguration;
@@ -39,7 +39,7 @@ public final class ShardingConfigurationLoaderTest {
     
     @Test
     public void assertLoad() throws IOException {
-        ShardingConfiguration actual = new ShardingConfigurationLoader().load();
+        ShardingConfiguration actual = new ShardingConfigurationLoader().load("/conf/");
         assertOrchestrationConfiguration(actual.getServerConfiguration().getOrchestration());
         assertThat(actual.getRuleConfigurationMap().size(), is(3));
         assertShardingRuleConfiguration(actual.getRuleConfigurationMap().get("sharding_db"));

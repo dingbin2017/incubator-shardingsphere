@@ -21,9 +21,9 @@ import com.google.common.collect.Sets;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.shardingsphere.core.database.DatabaseTypes;
+import org.apache.shardingsphere.underlying.common.database.type.DatabaseTypes;
 import org.apache.shardingsphere.shardingjdbc.common.env.DatabaseEnvironment;
-import org.apache.shardingsphere.spi.database.DatabaseType;
+import org.apache.shardingsphere.spi.database.type.DatabaseType;
 import org.h2.tools.RunScript;
 import org.junit.BeforeClass;
 
@@ -33,6 +33,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -62,7 +63,7 @@ public abstract class AbstractSQLTest {
     private static void createDataSources(final String dbName, final DatabaseType databaseType) {
         Map<String, DataSource> dataSourceMap = databaseTypeMap.get(databaseType);
         if (null == dataSourceMap) {
-            dataSourceMap = new HashMap<>();
+            dataSourceMap = new LinkedHashMap<>();
             databaseTypeMap.put(databaseType, dataSourceMap);
         }
         BasicDataSource result = buildDataSource(dbName, databaseType);

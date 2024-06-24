@@ -19,12 +19,12 @@ package org.apache.shardingsphere.shardingjdbc.orchestration.internal.datasource
 
 import com.google.common.base.Optional;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.shardingsphere.api.config.encrypt.EncryptColumnRuleConfiguration;
-import org.apache.shardingsphere.api.config.encrypt.EncryptRuleConfiguration;
-import org.apache.shardingsphere.api.config.encrypt.EncryptTableRuleConfiguration;
-import org.apache.shardingsphere.api.config.encrypt.EncryptorRuleConfiguration;
-import org.apache.shardingsphere.core.config.DataSourceConfiguration;
-import org.apache.shardingsphere.core.constant.ShardingConstant;
+import org.apache.shardingsphere.encrypt.api.EncryptColumnRuleConfiguration;
+import org.apache.shardingsphere.encrypt.api.EncryptRuleConfiguration;
+import org.apache.shardingsphere.encrypt.api.EncryptTableRuleConfiguration;
+import org.apache.shardingsphere.encrypt.api.EncryptorRuleConfiguration;
+import org.apache.shardingsphere.underlying.common.config.DataSourceConfiguration;
+import org.apache.shardingsphere.underlying.common.constant.ShardingConstant;
 import org.apache.shardingsphere.orchestration.config.OrchestrationConfiguration;
 import org.apache.shardingsphere.orchestration.internal.registry.config.event.DataSourceChangedEvent;
 import org.apache.shardingsphere.orchestration.internal.registry.config.event.EncryptRuleChangedEvent;
@@ -82,7 +82,7 @@ public final class OrchestrationEncryptDataSourceTest {
         assertThat(encryptDataSource.getDataSource().getRuntimeContext().getRule().getEncryptTableNames().size(), is(1));
         assertThat(encryptDataSource.getDataSource().getRuntimeContext().getRule().getEncryptTableNames().iterator().next(), is("t_order_item"));
         assertThat(encryptDataSource.getDataSource().getRuntimeContext().getRule().getCipherColumn("t_order_item", "item_id"), is("cipher_item_id"));
-        assertThat(encryptDataSource.getDataSource().getRuntimeContext().getRule().getPlainColumn("t_order_item", "item_id"), is(Optional.of("plain_item_id")));
+        assertThat(encryptDataSource.getDataSource().getRuntimeContext().getRule().findPlainColumn("t_order_item", "item_id"), is(Optional.of("plain_item_id")));
         Map<String, EncryptorRuleConfiguration> encryptorRuleConfigurations = encryptDataSource.getDataSource().getRuntimeContext().getRule().getRuleConfiguration().getEncryptors();
         assertThat(encryptorRuleConfigurations.size(), is(1));
         assertTrue(encryptorRuleConfigurations.containsKey("order_encryptor"));
@@ -127,7 +127,7 @@ public final class OrchestrationEncryptDataSourceTest {
     @Test
     public void assertRenewProperties() {
         encryptDataSource.renew(getPropertiesChangedEvent());
-        assertThat(encryptDataSource.getDataSource().getRuntimeContext().getProps().getProps().getProperty("sql.show"), is("true"));
+        assertThat(encryptDataSource.getDataSource().getRuntimeContext().getProperties().getProps().getProperty("sql.show"), is("true"));
     }
     
     private PropertiesChangedEvent getPropertiesChangedEvent() {
